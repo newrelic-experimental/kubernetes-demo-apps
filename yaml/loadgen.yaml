@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loadgen
+  labels:
+    app: loadgen
+spec:
+  containers:
+  - image: docker.io/spolfliet/newrelic-k8s-guestbook-loadgen:latest
+    name: loadgen
+  restartPolicy: Always

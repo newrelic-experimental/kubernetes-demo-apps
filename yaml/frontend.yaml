@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: guestbook
+    tier: frontend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: docker.io/spolfliet/newrelic-k8s-guestbook-frontend:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        livenessProbe:
+         httpGet:
+           path: /healthz
+           port: 3000
+         initialDelaySeconds: 30
+         periodSeconds: 5
+         failureThreshold: 1 # For demo purposes
+        env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-secret
+              key: new_relic_license_key
+        - name: NEW_RELIC_APP_NAME
+          value: K8s guestbook - frontend
+          # tells the node.js app to pause at random intervals
+        - name: LOOK_BUSY
+          value: f
+          # tells the node.js app to throw synthetic errors
+        - name: THROW_ERROR
+          value: f
+        - name: GET_HOSTS_FROM
+          value: dns
+          # If your cluster config does not include a dns service, then to
+          # instead access environment variables to find service host
+          # info, comment out the 'value: dns' line above, and uncomment the
+          # line below:
+          # value: env
+        ports:
+          - containerPort: 3000

@@ -1,0 +1,23 @@
+html
+  head
+    title= title
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js')
+  body
+    h1= message
+    div Last sent message:&nbsp;
+      span(id='message-text') ...
+    div
+      form(action='/message', method='post')
+        label(for='message') Message
+        input(type='text', size=30, name='message')
+        br
+        input(type='submit')
+    script(type='text/javascript').
+      var getLastMessage = function() {
+        $.get('/message', function(data) { 
+          $('#message-text').text(data);
+        });
+      }
+      getLastMessage();
+      setInterval(getLastMessage, 1000);

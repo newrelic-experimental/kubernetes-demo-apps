@@ -1,38 +1,24 @@
 [![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
 
-# [Name of Project] [build badges go here when available]
+# Kubernetes Demo Apps [build badges go here when available]
 
->[Brief description - what is the project and value does it provide? How often should users expect to get releases? How is versioning set up? Where does this project want to go?]
-
-## Installation
-
-> [Include a step-by-step procedure on how to get your code installed. Be sure to include any third-party dependencies that need to be installed separately]
+The repo contains a set of applications for Kubernetes that simulate a working production environment. They applications include: our APM agents + distributed tracing set-up, kubernetes health checks, resource limits, and much more. This set of applications can be used in the K8S NRU Instruqt tracks and for lightning talks and demo’s.
 
 ## Getting Started
->[Simple steps to start working with the software similar to a "Hello World"]
 
-## Usage
->[**Optional** - Include more thorough instructions on how to use the software. This section might not be needed if the Getting Started section is enough. Remove this section if it's not needed.]
+1) You need a New Relic account and license key. You can create one on https://newrelic.com/signup
 
+2) Deploy a Kubernetes secret with your New Relic license key: `kubectl create secret generic newrelic-secret --from-literal=new_relic_license_key='[[NEW RELIC LICENSE KEY]]'`
 
-## Building
-
->[**Optional** - Include this section if users will need to follow specific instructions to build the software from source. Be sure to include any third party build dependencies that need to be installed separately. Remove this section if it's not needed.]
-
-## Testing
-
->[**Optional** - Include instructions on how to run tests if we include tests with the codebase. Remove this section if it's not needed.]
+3) Deploy the applications on a Kubernetes cluster with `kubectl apply -f yaml/`
 
 ## Support
 
-New Relic hosts and moderates an online forum where customers can interact with New Relic employees as well as other customers to get help and share best practices. Like all official New Relic open source projects, there's a related Community topic in the New Relic Explorers Hub. You can find this project's topic/threads here:
-
->Add the url for the support thread here
+If you encounter any issues, have feedback or ideas. Please don't hesitate to create a ticket.
 
 ## Contributing
-We encourage your contributions to improve [project name]! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. You only have to sign the CLA one time per project.
+We encourage your contributions to improve the Kubernetes Demo Apps! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. You only have to sign the CLA one time per project.
 If you have any questions, or to execute our corporate CLA, required if your contribution is on behalf of a company,  please drop us an email at opensource@newrelic.com.
 
 ## License
-[Project Name] is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
->[If applicable: The [project name] also uses source code from third-party libraries. You can find full details on which libraries are used and the terms under which they are licensed in the third-party notices document.]
+Kubernetes Demo Apps is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
