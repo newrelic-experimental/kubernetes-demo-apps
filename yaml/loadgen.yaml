@@ -6,6 +6,6 @@ metadata:
     app: loadgen
 spec:
   containers:
-  - image: docker.io/spolfliet/newrelic-k8s-guestbook-loadgen:latest
+  - image: docker.pkg.github.com/newrelic-experimental/kubernetes-demo-apps/loadgen:latest
     name: loadgen
   restartPolicy: Always

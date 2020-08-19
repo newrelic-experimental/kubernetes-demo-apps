@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: docker.io/spolfliet/newrelic-k8s-guestbook-frontend:latest
+        image: docker.pkg.github.com/newrelic-experimental/kubernetes-demo-apps/frontend:latest
         resources:
           requests:
             cpu: 100m
