@@ -14,12 +14,19 @@ spec:
     app: guestbook
     tier: worker
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker
+  labels:
+    app: guestbook
+    tier: worker
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook
+      tier: worker
   template:
     metadata:
       labels:
@@ -28,7 +35,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: docker.pkg.github.com/newrelic-experimental/kubernetes-demo-apps/worker:latest
+        image: ghcr.io/kidk/kubernetes-demo-apps-worker:latest
         resources:
           requests:
             cpu: 50m
