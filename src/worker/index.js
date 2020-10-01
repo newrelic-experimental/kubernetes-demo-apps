@@ -11,7 +11,7 @@ const newrelicFormatter = require('@newrelic/winston-enricher')
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-const redisHost = process.env.GET_HOSTS_ENV !== 'env' ? 'redis-master' : process.env.REDIS_MASTER_SERVICE_HOST;
+const redisHost = process.env.GET_HOSTS_ENV !== 'env' ? 'redis-primary' : process.env.REDIS_MASTER_SERVICE_HOST;
 
 const client = redis.createClient({ host: redisHost, port: 6379 });
 app.locals.newrelic = newrelic;
