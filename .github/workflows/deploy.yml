@@ -22,33 +22,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build frontend and publish to repository
-      uses: matootie/github-docker@v3.1.0
-      with:
-        accessToken: ${{ secrets.PAT }}
-        containerRegistry: true
-        imageName: frontend
-        context: src/frontend/
+      run: |
+        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u kidk --password-stdin
+        docker build src/frontend/ --tag ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
+        docker push ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
 
-    - name: Build loadgen and publish to repository
-      uses: matootie/github-docker@v3.1.0
-      with:
-        accessToken: ${{ secrets.PAT }}
-        containerRegistry: true
-        imageName: loadgen
-        context: src/loadgen/
 
-    - name: Build parser and publish to repository
-      uses: matootie/github-docker@v3.1.0
-      with:
-        accessToken: ${{ secrets.PAT }}
-        containerRegistry: true
-        imageName: parser
-        context: src/parser/
-
-    - name: Build worker and publish to repository
-      uses: matootie/github-docker@v3.1.0
-      with:
-        accessToken: ${{ secrets.PAT }}
-        containerRegistry: true
-        imageName: worker
-        context: src/worker/
