@@ -23,7 +23,7 @@ jobs:
 
     - name: Build frontend and publish to repository
       run: |
-        echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u kidk --password-stdin
+        echo "${{ secrets.PAT }}" | docker login ghcr.io -u kidk --password-stdin
         docker build src/frontend/ --tag ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
         docker push ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
 
