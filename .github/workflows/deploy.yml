@@ -27,4 +27,20 @@ jobs:
         docker build src/frontend/ --tag ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
         docker push ghcr.io/kidk/kubernetes-demo-apps-frontend:latest
 
+    - name: Build loadgen and publish to repository
+      run: |
+        echo "${{ secrets.PAT }}" | docker login ghcr.io -u kidk --password-stdin
+        docker build src/loadgen/ --tag ghcr.io/kidk/kubernetes-demo-apps-loadgen:latest
+        docker push ghcr.io/kidk/kubernetes-demo-apps-loadgen:latest
 
+    - name: Build parser and publish to repository
+      run: |
+        echo "${{ secrets.PAT }}" | docker login ghcr.io -u kidk --password-stdin
+        docker build src/parser/ --tag ghcr.io/kidk/kubernetes-demo-apps-parser:latest
+        docker push ghcr.io/kidk/kubernetes-demo-apps-parser:latest
+
+    - name: Build worker and publish to repository
+      run: |
+        echo "${{ secrets.PAT }}" | docker login ghcr.io -u kidk --password-stdin
+        docker build src/worker/ --tag ghcr.io/kidk/kubernetes-demo-apps-worker:latest
+        docker push ghcr.io/kidk/kubernetes-demo-apps-worker:latest
