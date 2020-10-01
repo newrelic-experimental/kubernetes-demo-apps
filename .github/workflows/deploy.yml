@@ -24,7 +24,7 @@ jobs:
     - name: Build frontend and publish to repository
       uses: matootie/github-docker@v3.1.0
       with:
-        accessToken: ${{ github.PAT }}
+        accessToken: ${{ secrets.PAT }}
         containerRegistry: true
         imageName: frontend
         context: src/frontend/
@@ -32,7 +32,7 @@ jobs:
     - name: Build loadgen and publish to repository
       uses: matootie/github-docker@v3.1.0
       with:
-        accessToken: ${{ github.PAT }}
+        accessToken: ${{ secrets.PAT }}
         containerRegistry: true
         imageName: loadgen
         context: src/loadgen/
@@ -40,7 +40,7 @@ jobs:
     - name: Build parser and publish to repository
       uses: matootie/github-docker@v3.1.0
       with:
-        accessToken: ${{ github.PAT }}
+        accessToken: ${{ secrets.PAT }}
         containerRegistry: true
         imageName: parser
         context: src/parser/
@@ -48,7 +48,7 @@ jobs:
     - name: Build worker and publish to repository
       uses: matootie/github-docker@v3.1.0
       with:
-        accessToken: ${{ github.PAT }}
+        accessToken: ${{ secrets.PAT }}
         containerRegistry: true
         imageName: worker
         context: src/worker/
