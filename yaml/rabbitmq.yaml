@@ -6,7 +6,6 @@ metadata:
     app: rabbitmq
     tier: queue
 spec:
-  type: NodePort
   ports:
   - port: 5672
     targetPort: 5672

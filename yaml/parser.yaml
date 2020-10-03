@@ -6,7 +6,6 @@ metadata:
     app: guestbook
     tier: parser
 spec:
-  type: NodePort
   ports:
   - port: 80
     targetPort: 3000
