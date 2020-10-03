@@ -45,6 +45,7 @@ var lookBusy = function() {
 var pushToQueue = function(message, res) {
   lookBusy();
 
+  logger.info('Connecting with rabbitmq...');
   amqp.connect('amqp://user:bitnami@rabbitmq:5672').then(function(conn) {
     return conn.createChannel().then(function(ch) {
       var q = 'message';
@@ -52,7 +53,7 @@ var pushToQueue = function(message, res) {
 
       return ok.then(function(_qok) {
         newrelic.addCustomAttribute('msgData', message);
-        logger.error('Sending to queue: ' + message);
+        logger.info('Sending to queue: ' + message);
         ch.sendToQueue(q, Buffer.from(message));
 
         return ch.close();
@@ -61,7 +62,7 @@ var pushToQueue = function(message, res) {
       conn.close();
       res.status(200).send('OK');
     });
-  }).catch(logger.error);
+  }).catch(err => logger.error(err));
 }
 
 // Look busy middleware
