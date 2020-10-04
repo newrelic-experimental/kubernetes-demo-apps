@@ -120,6 +120,7 @@ app.post('/message', function(req, res) {
 });
 
 app.get('/healthz', function (req, res) {
+  newrelic.setIgnoreTransaction(true);
   // Fail 1 out of 10 requests
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
