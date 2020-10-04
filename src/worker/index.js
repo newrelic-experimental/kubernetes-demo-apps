@@ -47,7 +47,7 @@ var lookBusy = function() {
 };
 
 var listenToQueue = function() {
-  logger.error('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': start listening to queue');
+  logger.info('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': start listening to queue');
 
   amqp.connect('amqp://user:bitnami@rabbitmq:5672').then(function(conn) {
     process.once('SIGINT', function() { conn.close(); });
@@ -59,7 +59,7 @@ var listenToQueue = function() {
         return ch.consume(q, function(msg) {
           lookBusy();
           var message = msg.content.toString();
-          logger.error('Received & processing ' + message);
+          logger.info('Worker pushing to Redis ' + message);
 
           // Push to Redis
           client.set('message', message, function(err) {
@@ -71,7 +71,7 @@ var listenToQueue = function() {
       });
 
       return ok.then(function(_consumeOk) {
-        logger.error(' [*] Waiting for messages');
+        logger.info(' [*] Waiting for messages');
       });
     });
   }).catch(logger.error);

@@ -68,7 +68,7 @@ var pushToQueue = function(message, res) {
 // Look busy middleware
 app.use(function(req, res, next) {
   if (process.env.LOOK_BUSY == 't') {
-    logger.log('looking busy ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME)
+    logger.info('looking busy ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME)
     lookBusy();
   }
 
@@ -83,11 +83,11 @@ app.get('/healthz', function (req, res) {
 app.get('/', function(req, res) {
   var message = req.query.message;
 
-  logger.info('Received ' + message);
+  logger.info('Parser received ' + message);
 
   pushToQueue(message, res)
 });
 
 app.listen(process.env.PORT || 3000, function () {
-  logger.error('Parser ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': listening on port 3000!');
+  logger.info('Parser ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': listening on port 3000!');
 });

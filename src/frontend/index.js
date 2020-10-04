@@ -96,7 +96,7 @@ app.get('/message', function (req, res) {
 app.post('/message', function(req, res) {
   var message = req.body.message;
 
-  logger.info('Received ' + message);
+  logger.info('Frontend received ' + message);
 
   const options = {
     hostname: 'parser',
@@ -132,7 +132,7 @@ app.get('/healthz', function (req, res) {
 });
 
 app.listen(process.env.PORT || 3000, function () {
-  logger.error('Frontend ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ' listening on port 3000!');
+  logger.info('Frontend ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ' listening on port 3000!');
 });
 
 client.on('error', function(err) {
