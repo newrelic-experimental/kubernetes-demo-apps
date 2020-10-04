@@ -96,7 +96,7 @@ app.get('/message', function (req, res) {
 app.post('/message', function(req, res) {
   var message = req.body.message;
 
-  logger.info('Frontend received ' + message);
+  logger.info('Frontend received: ' + message);
 
   const options = {
     hostname: 'parser',
@@ -108,7 +108,7 @@ app.post('/message', function(req, res) {
   logger.info('Forwarding to parser service');
   const request = http.request(options, (res) => {
     res.on('data', (d) => {
-      logger.info('Answer received, done', d);
+      logger.info('Successfully sent to parser', d);
     })
   });
   request.on('error', (error) => {

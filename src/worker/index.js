@@ -59,7 +59,7 @@ var listenToQueue = function() {
         return ch.consume(q, function(msg) {
           lookBusy();
           var message = msg.content.toString();
-          logger.info('Worker pushing to Redis ' + message);
+          logger.info('Worker pushing to Redis: ' + message);
 
           // Push to Redis
           client.set('message', message, function(err) {

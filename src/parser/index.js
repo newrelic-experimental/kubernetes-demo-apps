@@ -83,7 +83,7 @@ app.get('/healthz', function (req, res) {
 app.get('/', function(req, res) {
   var message = req.query.message;
 
-  logger.info('Parser received ' + message);
+  logger.info('Parser received: ' + message);
 
   pushToQueue(message, res)
 });
