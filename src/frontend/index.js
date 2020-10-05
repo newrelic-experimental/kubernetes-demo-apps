@@ -125,7 +125,7 @@ app.get('/healthz', function (req, res) {
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
   if (fail) {
-    logger.error('Error - Unsupported USER_AGENT');
+    logger.error('Error - Unsupported User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko');
     res.status(500).send('FAILED');
   } else {
     res.status(200).send('OK');
