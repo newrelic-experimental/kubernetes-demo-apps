@@ -49,6 +49,7 @@ var lookBusy = function() {
 
 // Push to Redis
 var pushToRedis = function(message) {
+  logger.info('Worker pushing to Redis: ' + message);
   client.set('message', message, function(err) {
     if (err) {
       logger.error('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': Error pushing to Redis');
@@ -58,6 +59,7 @@ var pushToRedis = function(message) {
 
 // Request to 3rd-party
 var notifyThirdParty = function() {
+  logger.info('Contacting 3rd-party...');
   // Fail 1 out of 10 requests
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
@@ -98,8 +100,7 @@ var listenToQueue = function() {
         return ch.consume(q, function(msg) {
           lookBusy();
           var message = msg.content.toString();
-          logger.info('Worker pushing to Redis: ' + message);
-
+          
           pushToRedis(message);
 
           notifyThirdParty();
