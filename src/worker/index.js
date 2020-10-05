@@ -3,7 +3,7 @@ const redis = require('redis');
 const amqp = require('amqplib');
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
+const https = require('https');
 
 // Add Winston logging for logs in context
 var winston = require('winston'),
@@ -64,7 +64,7 @@ var notifyThirdParty = function() {
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
   var options = {
-    host: 'www.random.org',
+    host: 'https://www.random.org',
     path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
   };
 
@@ -86,7 +86,7 @@ var notifyThirdParty = function() {
     }
   }
   
-  http.request(options, callback).end(function(){
+  https.request(options, callback).end(function(){
     logger.info('Third-party call is finished');
   });
 }
