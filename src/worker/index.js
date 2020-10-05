@@ -59,40 +59,45 @@ var pushToRedis = function(message) {
 };
 
 // Request to 3rd-party
-var notifyThirdParty = function() {
-  
-  // Fail 1 out of 10 requests
-  var failRate = 10;
-  var fail = Math.floor(Math.random() * failRate) === 1;
-  const options = {
-    host: 'www.random.org',
-    port: 80,
-    path: '/integers/?' + querystring.escape('num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'),
-    method: 'GET'
-  };
+async function notifyThirdParty() {
+  await notifyRandomOrg();
+}
 
-  if (fail) {
-    options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
-    logger.info('Contacting 3rd-party... ' + options.host + options.path);
-    newrelic.noticeError('HTTP error ' + options.path);
-  } else {
-    logger.info('Contacting 3rd-party... ' + options.host + options.path);
-  }
+function notifyRandomOrg() {
+  return new Promise((resolve, reject) => {
+    // Fail 1 out of 10 requests
+    var failRate = 10;
+    var fail = Math.floor(Math.random() * failRate) === 1;
+    const options = {
+      host: 'www.random.org',
+      port: 80,
+      path: '/integers/?' + querystring.escape('num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'),
+      method: 'GET'
+    };
 
-  const request = https.request(options, (res) => {
-    res.on('data', (d) => {
-      if (res.statusCode >= 300) {
-        newrelic.noticeError('Error third-party, code: ' + res.statusCode);
-        logger.error('Error third-party, code: ' + res.statusCode);
-      } else {
-        logger.info('Third-party request successfull, code: ' + res.statusCode);
-      }
+    if (fail) {
+      options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
+      logger.info('Contacting 3rd-party... ' + options.host + options.path);
+      newrelic.noticeError('HTTP error ' + options.path);
+    } else {
+      logger.info('Contacting 3rd-party... ' + options.host + options.path);
+    }
+
+    const request = https.request(options, (res) => {
+      res.on('data', (d) => {
+        if (res.statusCode >= 300) {
+          newrelic.noticeError('Error third-party, code: ' + res.statusCode);
+          logger.error('Error third-party, code: ' + res.statusCode);
+        } else {
+          logger.info('Third-party request successfull, code: ' + res.statusCode);
+        }
+      })
+    });
+    request.on('error', (error) => {
+      logger.error('GET Error', error);
     })
+    request.end();
   });
-  request.on('error', (error) => {
-    logger.error('GET Error', error);
-  })
-  request.end()
 }
 
 var listenToQueue = function() {
