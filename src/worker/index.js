@@ -82,7 +82,9 @@ var notifyThirdParty = function() {
     }
   }
   
-  http.request(options, callback).end();
+  http.request(options, callback).end(function(){
+    logger.info('Third-party call is finished');
+  });
 }
 
 var listenToQueue = function() {
