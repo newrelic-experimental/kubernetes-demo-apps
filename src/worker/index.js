@@ -4,6 +4,7 @@ const amqp = require('amqplib');
 const express = require('express');
 const bodyParser = require('body-parser');
 const https = require('https');
+const querystring = require('querystring');
 
 // Add Winston logging for logs in context
 var winston = require('winston'),
@@ -63,32 +64,35 @@ var notifyThirdParty = function() {
   // Fail 1 out of 10 requests
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
-  var options = {
+  const options = {
     host: 'www.random.org',
-    path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+    port: 80,
+    path: '/integers/?' + querystring.escape('num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'),
+    method: 'GET'
   };
 
   if (fail) {
     options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
     logger.info('Contacting 3rd-party... ' + options.host + options.path);
-    newrelic.noticeError('Error third-party');
+    newrelic.noticeError('HTTP error ' + options.path);
   } else {
     logger.info('Contacting 3rd-party... ' + options.host + options.path);
   }
-  
 
-  callback = function(response) {
-    if (response.statusCode >= 300) {
-      newrelic.noticeError('Error third-party, code: ' + response.statusCode);
-      logger.error('Error third-party, code: ' + response.statusCode);
-    } else {
-      logger.info('Third-party request successfull, code: ', response.statusCode);
-    }
-  }
-  
-  https.request(options, callback).end(function(){
-    logger.info('Third-party call is finished');
+  const request = http.request(options, (res) => {
+    res.on('data', (d) => {
+      if (res.statusCode >= 300) {
+        newrelic.noticeError('Error third-party, code: ' + res.statusCode);
+        logger.error('Error third-party, code: ' + res.statusCode);
+      } else {
+        logger.info('Third-party request successfull, code: ' + res.statusCode);
+      }
+    })
   });
+  request.on('error', (error) => {
+    logger.error('GET Error', error);
+  })
+  request.end()
 }
 
 var listenToQueue = function() {

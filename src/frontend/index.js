@@ -112,7 +112,7 @@ app.post('/message', function(req, res) {
     })
   });
   request.on('error', (error) => {
-    logger.error('GET Error', d);
+    logger.error('GET Error', error);
   })
   request.end()
 
