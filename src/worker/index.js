@@ -3,6 +3,7 @@ const redis = require('redis');
 const amqp = require('amqplib');
 const express = require('express');
 const bodyParser = require('body-parser');
+const http = require('http');
 
 // Add Winston logging for logs in context
 var winston = require('winston'),
@@ -46,6 +47,44 @@ var lookBusy = function() {
   }
 };
 
+// Push to Redis
+var pushToRedis = function(message) {
+  client.set('message', message, function(err) {
+    if (err) {
+      logger.error('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': Error pushing to Redis');
+    }
+  });
+};
+
+// Request to 3rd-party
+var notifyThirdParty = function() {
+  // Fail 1 out of 10 requests
+  var failRate = 10;
+  var fail = Math.floor(Math.random() * failRate) === 1;
+  var options = {
+    host: 'www.random.org',
+    path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+  };
+  if (fail) {
+   options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
+  }
+  
+  callback = function(response) {
+    // Ignore the response
+    // var str = '';
+  
+    // response.on('data', function (chunk) {
+    //   str += chunk;
+    // });
+  
+    // response.on('end', function () {
+    //   console.log(str);
+    // });
+  }
+  
+  http.request(options, callback).end();
+}
+
 var listenToQueue = function() {
   logger.info('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': start listening to queue');
 
@@ -61,12 +100,9 @@ var listenToQueue = function() {
           var message = msg.content.toString();
           logger.info('Worker pushing to Redis: ' + message);
 
-          // Push to Redis
-          client.set('message', message, function(err) {
-            if (err) {
-              logger.error('Worker ' + process.env.NEW_RELIC_METADATA_KUBERNETES_POD_NAME + ': Error pushing to Redis');
-            }
-          });
+          pushToRedis(message);
+
+          notifyThirdParty();
         }, {noAck: true});
       });
 
