@@ -79,7 +79,7 @@ var notifyThirdParty = function() {
     logger.info('Contacting 3rd-party... ' + options.host + options.path);
   }
 
-  const request = http.request(options, (res) => {
+  const request = https.request(options, (res) => {
     res.on('data', (d) => {
       if (res.statusCode >= 300) {
         newrelic.noticeError('Error third-party, code: ' + res.statusCode);
