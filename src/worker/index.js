@@ -59,7 +59,7 @@ var pushToRedis = function(message) {
 
 // Request to 3rd-party
 var notifyThirdParty = function() {
-  logger.info('Contacting 3rd-party...');
+  
   // Fail 1 out of 10 requests
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
@@ -71,6 +71,8 @@ var notifyThirdParty = function() {
     options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
   }
   
+  logger.info('Contacting 3rd-party... ' + options.host + options.path);
+
   callback = function(response) {
     if (response.statusCode >= 400) {
       newrelic.noticeError('Error third-party, code: ' + response.statusCode);
