@@ -68,10 +68,16 @@ var notifyThirdParty = function() {
     path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
   };
   if (fail) {
-   options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
+    options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
   }
   
   callback = function(response) {
+    if (response.statusCode > 200) {
+      newrelic.noticeError('Error third-party, code: ' + response.statusCode);
+      throw new Error('Error third-party, code: ' + response.statusCode);
+    } else {
+      logger.info('Third-party request successfull');
+    }
     // Ignore the response
     // var str = '';
   
