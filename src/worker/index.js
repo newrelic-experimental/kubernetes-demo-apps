@@ -64,7 +64,7 @@ var notifyThirdParty = function() {
   var failRate = 10;
   var fail = Math.floor(Math.random() * failRate) === 1;
   var options = {
-    host: 'https://www.random.org',
+    host: 'www.random.org',
     path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
   };
 
