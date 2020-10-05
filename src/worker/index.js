@@ -67,11 +67,15 @@ var notifyThirdParty = function() {
     host: 'www.random.org',
     path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
   };
+
   if (fail) {
     options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
+    logger.info('Contacting 3rd-party... ' + options.host + options.path);
+    newrelic.noticeError('Error third-party');
+  } else {
+    logger.info('Contacting 3rd-party... ' + options.host + options.path);
   }
   
-  logger.info('Contacting 3rd-party... ' + options.host + options.path);
 
   callback = function(response) {
     if (response.statusCode >= 300) {
