@@ -72,7 +72,7 @@ var notifyThirdParty = function() {
   }
   
   callback = function(response) {
-    if (response.statusCode > 200) {
+    if (response.statusCode >= 400) {
       newrelic.noticeError('Error third-party, code: ' + response.statusCode);
       throw new Error('Error third-party, code: ' + response.statusCode);
     } else {
