@@ -88,13 +88,16 @@ function notifyRandomOrg() {
         if (res.statusCode >= 300) {
           newrelic.noticeError('Error third-party, code: ' + res.statusCode);
           logger.error('Error third-party, code: ' + res.statusCode);
+          reject('Error third-party, code: ' + res.statusCode);
         } else {
           logger.info('Third-party request successfull, code: ' + res.statusCode);
+          resolve();
         }
       })
     });
     request.on('error', (error) => {
       logger.error('GET Error', error);
+      reject(error);
     })
     request.end();
   });
