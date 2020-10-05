@@ -76,20 +76,10 @@ var notifyThirdParty = function() {
   callback = function(response) {
     if (response.statusCode >= 300) {
       newrelic.noticeError('Error third-party, code: ' + response.statusCode);
-      throw new Error('Error third-party, code: ' + response.statusCode);
+      logger.error('Error third-party, code: ' + response.statusCode);
     } else {
       logger.info('Third-party request successfull, code: ', response.statusCode);
     }
-    // Ignore the response
-    // var str = '';
-  
-    // response.on('data', function (chunk) {
-    //   str += chunk;
-    // });
-  
-    // response.on('end', function () {
-    //   console.log(str);
-    // });
   }
   
   http.request(options, callback).end();
