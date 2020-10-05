@@ -74,11 +74,11 @@ var notifyThirdParty = function() {
   logger.info('Contacting 3rd-party... ' + options.host + options.path);
 
   callback = function(response) {
-    if (response.statusCode >= 400) {
+    if (response.statusCode >= 300) {
       newrelic.noticeError('Error third-party, code: ' + response.statusCode);
       throw new Error('Error third-party, code: ' + response.statusCode);
     } else {
-      logger.info('Third-party request successfull');
+      logger.info('Third-party request successfull, code: ', response.statusCode);
     }
     // Ignore the response
     // var str = '';
