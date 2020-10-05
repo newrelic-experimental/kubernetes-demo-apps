@@ -60,7 +60,11 @@ var pushToRedis = function(message) {
 
 // Request to 3rd-party
 async function notifyThirdParty() {
-  await notifyRandomOrg();
+  try {
+    await notifyRandomOrg();
+  } catch (error) {
+    logger.error(error);
+  }
 }
 
 function notifyRandomOrg() {
@@ -70,7 +74,7 @@ function notifyRandomOrg() {
     var fail = Math.floor(Math.random() * failRate) === 1;
     const options = {
       host: 'www.random.org',
-      port: 80,
+      port: 443,
       path: '/integers/?' + querystring.escape('num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'),
       method: 'GET'
     };
