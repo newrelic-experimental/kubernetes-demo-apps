@@ -89,6 +89,9 @@ function notifyRandomOrg() {
 
     const request = https.request(options, (res) => {
       res.on('data', (d) => {
+        // Ignore the data
+      })
+      res.on('end', function() {
         if (res.statusCode >= 300) {
           newrelic.noticeError('Error third-party, code: ' + res.statusCode);
           logger.error('Error third-party, code: ' + res.statusCode);
@@ -97,7 +100,7 @@ function notifyRandomOrg() {
           logger.info('Third-party request successfull, code: ' + res.statusCode);
           resolve();
         }
-      })
+      });
     });
     request.on('error', (error) => {
       logger.error('GET Error', error);
