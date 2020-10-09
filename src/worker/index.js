@@ -82,7 +82,7 @@ function notifyRandomOrg() {
     if (fail) {
       options.path = '/floats/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new';
       logger.info('Contacting 3rd-party... ' + options.host + options.path);
-      newrelic.noticeError('HTTP error ' + options.path);
+      newrelic.noticeError('HTTP error ' + options.host + options.path);
     } else {
       logger.info('Contacting 3rd-party... ' + options.host + options.path);
     }
