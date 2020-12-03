@@ -49,8 +49,8 @@ spec:
         - name: NEW_RELIC_LICENSE_KEY
           valueFrom:
             secretKeyRef:
-              name: newrelic-bundle-newrelic-infrastructure-config
-              key: license
+              name: newrelic-secret
+              key: new_relic_license_key
         - name: NEW_RELIC_APP_NAME
           value: K8s guestbook - parser
           # tells the node.js app to pause at random intervals
