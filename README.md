@@ -2,7 +2,7 @@
 
 # Kubernetes Demo Apps ![Build and publish](https://github.com/newrelic-experimental/kubernetes-demo-apps/workflows/Build%20and%20publish/badge.svg)
 
-The repo contains a set of applications for Kubernetes that simulate a working production environment. They applications include: our APM agents + distributed tracing set-up, kubernetes health checks, resource limits, and much more. This set of applications can be used in the K8S NRU Instruqt tracks and for lightning talks and demo’s.
+The repo contains a set of applications for Kubernetes that simulate a working production environment. The applications include: our APM agents + distributed tracing set-up, kubernetes health checks, resource limits, and much more. This set of applications can be used in the K8S NRU Instruqt tracks and for lightning talks and demo’s.
 
 ## Getting Started
 
